@@ -4,7 +4,6 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from 'react-native-responsive-screen';
-import AwesomeButton from 'react-native-really-awesome-button';
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
