@@ -15,6 +15,7 @@ import CardRequest from './src/screens/Fund Wallet Request/CardRequest';
 import AirtimeRoute from './Routes/AirtimeRoute';
 import VoucherRoutes from './Routes/VoucherRoute';
 import BillsRoute from './Routes/BillsRoute';
+import ElectricityRoute from './Routes/ElectricityRoute';
 
 const Stack = createStackNavigator();
 
@@ -105,6 +106,13 @@ const App = () => {
             headerShown: false,
           }}
           component={BillsRoute}
+        />
+        <Stack.Screen
+          name="Electricity"
+          options={{
+            headerShown: false,
+          }}
+          component={ElectricityRoute}
         />
       </Stack.Navigator>
     </NavigationContainer>

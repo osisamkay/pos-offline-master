@@ -67,7 +67,7 @@ const Cable = ({navigation}) => {
             buttonStyle={styles.modalBtn}
             type="outline"
             onPress={() => {
-              navigation.navigate('DirectTopUp');
+              navigation.navigate('DirectCustomer');
             }}
           />
         </View>

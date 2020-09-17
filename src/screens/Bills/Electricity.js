@@ -10,7 +10,7 @@ import Ussd, {ussdEventEmitter} from 'react-native-ussd';
 import Loader from 'react-native-multi-loader';
 import {Toast} from 'native-base';
 
-const Bills = ({navigation}) => {
+const Electricity = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const [line, setLine] = useState('08161341234');
@@ -53,21 +53,21 @@ const Bills = ({navigation}) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Button
-            title="Cable TV Subscription"
+            title="Direct Request from Customer"
             titleStyle={styles.btnTitle}
             buttonStyle={styles.modalBtn}
             type="outline"
             onPress={() => {
-              navigation.navigate('cable');
+              navigation.navigate('DirectElectricity');
             }}
           />
           <Button
-            title="Electricity Bill"
+            title="Direct to Customer"
             titleStyle={styles.btnTitle}
             buttonStyle={styles.modalBtn}
             type="outline"
             onPress={() => {
-              navigation.navigate('Electricity');
+              navigation.navigate('DirectElectricityCustomer');
             }}
           />
         </View>
@@ -82,7 +82,7 @@ const Bills = ({navigation}) => {
   );
 };
 
-export default Bills;
+export default Electricity;
 
 const styles = StyleSheet.create({
   centeredView: {

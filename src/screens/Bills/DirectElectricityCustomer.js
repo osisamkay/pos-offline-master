@@ -12,11 +12,12 @@ import {
 import {Toast, Picker, Icon} from 'native-base';
 import RNFetchBlob from 'rn-fetch-blob';
 
-const Voucher = () => {
+const DirectElectricityCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const [cableNumber, setCableNumber] = useState('');
-  const [line, setLine] = useState('08161341234');
+  const [meter, setMeter] = useState('');
+  const [amount, setAmount] = useState('');
   const [selectedValue, setSelectedValue] = useState('--select Cable--');
   const [modalVisible, setModalVisible] = useState(false);
   const [devices, setDevices] = useState([]);
@@ -61,7 +62,7 @@ const Voucher = () => {
       <ScrollView>
         <View style={styles.centeredView}>
           <View style={styles.mainView}>
-            <Text style={styles.header}>Voucher</Text>
+            <Text style={styles.header}>Direct funding to customer</Text>
             <View style={styles.pickerStyle}>
               <Picker
                 mode="dropdown"
@@ -71,12 +72,24 @@ const Voucher = () => {
                 placeholderStyle={{color: '#bfc6ea'}}
                 selectedValue={selectedValue}
                 onValueChange={onValueChange}>
-                <Picker.Item label="-- Select Cable --" value="key0" />
-                <Picker.Item label="Dstv" value="100" />
-                <Picker.Item label="GoTv" value="200" />
+                <Picker.Item label="-- Select Disco --" value="key0" />
+                <Picker.Item label="EKDC" value="100" />
+                <Picker.Item label="IKDC" value="200" />
               </Picker>
             </View>
 
+            <Input
+              placeholder="Enter Meter Number"
+              errorStyle={{color: 'red'}}
+              errorMessage=""
+              label="Meter Number :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              keyboardType="numeric"
+              onChangeText={(value) => {
+                setMeter(value);
+              }}
+            />
             <Input
               placeholder="Enter Amount"
               errorStyle={{color: 'red'}}
@@ -86,19 +99,20 @@ const Voucher = () => {
               inputContainerStyle={styles.input}
               keyboardType="numeric"
               onChangeText={(value) => {
-                setCableNumber(value);
+                setAmount(value);
               }}
             />
 
             <Button
-              title="Fund Cable"
+              title="Fund "
               titleStyle={styles.btnTitle}
               buttonStyle={styles.btnStyle}
               type="outline"
               onPress={() => {
                 if (
                   selectedValue === '--Select Cable--' ||
-                  cableNumber === ''
+                  amount === '' ||
+                  meter === ''
                 ) {
                   Toast.show({
                     text: 'Please Enter All Parameters',
@@ -106,7 +120,7 @@ const Voucher = () => {
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*15*${selectedValue}*${cableNumber}#`);
+                  dial(`*878*19*${selectedValue}*${meter}*${amount}#`);
                 }
               }}
             />
@@ -123,7 +137,7 @@ const Voucher = () => {
   );
 };
 
-export default Voucher;
+export default DirectElectricityCustomer;
 
 const styles = StyleSheet.create({
   centeredView: {
