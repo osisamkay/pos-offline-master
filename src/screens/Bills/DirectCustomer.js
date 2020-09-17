@@ -9,19 +9,16 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {Toast, Picker, Icon} from 'native-base';
-import RNFetchBlob from 'rn-fetch-blob';
+import {Toast} from 'native-base';
 
-const Voucher = () => {
+const DirectCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const [amount, setAmount] = useState('');
   const [line, setLine] = useState('08161341234');
-  const [selectedValue, setSelectedValue] = useState('--select--');
   const [modalVisible, setModalVisible] = useState(false);
-  const [devices, setDevices] = useState([]);
-
   useEffect(() => {
+    // Update the document title using the browser API
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
       console.log(event.ussdReply);
@@ -53,28 +50,23 @@ const Voucher = () => {
       console.log('CALL MAKING Permission Denied');
     }
   };
-  const onValueChange = (value) => {
-    setSelectedValue(value);
-  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
         <View style={styles.centeredView}>
           <View style={styles.mainView}>
-            <Text style={styles.header}>Voucher</Text>
-            <View style={styles.pickerStyle}>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="arrow-down" />}
-                style={{width: undefined}}
-                placeholder="Select your SIM"
-                placeholderStyle={{color: '#bfc6ea'}}
-                selectedValue={selectedValue}
-                onValueChange={onValueChange}>
-                <Picker.Item label="-- Select Network --" value="key0" />
-              </Picker>
-            </View>
-
+            <Text style={styles.header}>Direct Recharge</Text>
+            <Input
+              placeholder="Enter Number"
+              errorStyle={{color: 'red'}}
+              keyboardType="numeric"
+              label="Customer Number :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setToken(value);
+              }}
+            />
             <Input
               placeholder="Enter Amount"
               errorStyle={{color: 'red'}}
@@ -87,7 +79,6 @@ const Voucher = () => {
                 setAmount(value);
               }}
             />
-
             <Button
               title="Fund Customer"
               titleStyle={styles.btnTitle}
@@ -118,17 +109,16 @@ const Voucher = () => {
   );
 };
 
-export default Voucher;
+export default DirectCustomer;
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
   },
   mainView: {
-    // margin: 20,
+    margin: 20,
 
     borderRadius: 10,
     alignItems: 'center',
@@ -154,13 +144,5 @@ const styles = StyleSheet.create({
     color: '#4AA43D',
     fontSize: heightPercentageToDP('5%'),
     marginBottom: 30,
-  },
-  pickerStyle: {
-    width: widthPercentageToDP('90%'),
-
-    borderWidth: 1,
-    borderColor: 'green',
-    borderRadius: 4,
-    marginBottom: 20,
   },
 });

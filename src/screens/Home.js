@@ -75,6 +75,8 @@ const Home = ({navigation}) => {
                     ? navigation.navigate('Airtime')
                     : data.title === 'Voucher'
                     ? navigation.navigate('Voucher')
+                    : data.title === 'Bills'
+                    ? navigation.navigate('Bills')
                     : '';
                 }}>
                 <View>{data.img}</View>

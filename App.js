@@ -14,6 +14,7 @@ import RequestDirect from './src/screens/Fund Wallet Request/RequestDirect';
 import CardRequest from './src/screens/Fund Wallet Request/CardRequest';
 import AirtimeRoute from './Routes/AirtimeRoute';
 import VoucherRoutes from './Routes/VoucherRoute';
+import BillsRoute from './Routes/BillsRoute';
 
 const Stack = createStackNavigator();
 
@@ -97,6 +98,13 @@ const App = () => {
             headerShown: false,
           }}
           component={VoucherRoutes}
+        />
+        <Stack.Screen
+          name="Bills"
+          options={{
+            headerShown: false,
+          }}
+          component={BillsRoute}
         />
       </Stack.Navigator>
     </NavigationContainer>
