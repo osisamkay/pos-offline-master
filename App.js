@@ -16,13 +16,28 @@ import AirtimeRoute from './Routes/AirtimeRoute';
 import VoucherRoutes from './Routes/VoucherRoute';
 import BillsRoute from './Routes/BillsRoute';
 import ElectricityRoute from './Routes/ElectricityRoute';
+import Reg from './src/screens/Reg';
+import {rootReducer} from './src/Redux/rootReducer';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import {persistStore, persistReducer} from 'redux-persist';
+import {PersistGate} from 'redux-persist/integration/react';
+import AsyncStorage from '@react-native-community/async-storage';
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Reg">
+        <Stack.Screen
+          name="Reg"
+          options={{
+            headerShown: false,
+          }}
+          component={Reg}
+        />
         <Stack.Screen
           name="Home"
           options={{
@@ -32,31 +47,31 @@ const App = () => {
               shadowOpacity: 0,
               borderBottomWidth: 0,
             },
-            headerRight: () => (
+            headerLeft: () => (
               <Text
                 style={{
-                  marginRight: 10,
+                  marginLeft: 10,
                   fontSize: heightPercentageToDP('3.5%'),
                 }}>
                 Hello User
               </Text>
             ),
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home');
-                }}>
-                <Image
-                  source={require('./src/assets/Menu.png')}
-                  style={{
-                    width: widthPercentageToDP('10%'),
-                    height: heightPercentageToDP('10%'),
-                    marginLeft: 10,
-                  }}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            ),
+            // headerLeft: () => (
+            //   <TouchableOpacity
+            //     onPress={() => {
+            //       navigation.navigate('Home');
+            //     }}>
+            //     <Image
+            //       source={require('./src/assets/Menu.png')}
+            //       style={{
+            //         width: widthPercentageToDP('10%'),
+            //         height: heightPercentageToDP('10%'),
+            //         marginLeft: 10,
+            //       }}
+            //       resizeMode="contain"
+            //     />
+            //   </TouchableOpacity>
+            // ),
             headerTitleStyle: {
               display: 'none',
             },
@@ -64,6 +79,7 @@ const App = () => {
           }}
           component={Home}
         />
+
         <Stack.Screen
           name="RequestDirect"
           options={{
@@ -119,10 +135,23 @@ const App = () => {
   );
 };
 
-// export default App;
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  stateReconciler: autoMergeLevel2,
+  blacklist: ['SignUpReducer'],
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+let store = createStore(persistedReducer);
+let persistor = persistStore(store);
+// const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
 export default () => (
-  <Root>
-    <App />
-  </Root>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Root>
+        <App />
+      </Root>
+    </PersistGate>
+  </Provider>
 );

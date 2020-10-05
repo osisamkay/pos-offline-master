@@ -21,10 +21,13 @@ import {Buttons} from '../Components/HomeButton';
 import {Toast} from 'native-base';
 import {FlatGrid} from 'react-native-super-grid';
 import SplashScreen from 'react-native-splash-screen';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Home = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const {isReg, userToken} = useSelector((state) => state);
+  console.log(userToken.token);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -73,40 +76,7 @@ const Home = ({navigation}) => {
             setModalVisible(true);
           }}
         />
-        {/* <View style={styles.ViewBtn}>
-          {Buttons.map((data) => {
-            return (
-              <TouchableOpacity
-                key={data.title}
-                style={styles.clickable}
-                onPress={() => {
-                  data.title === 'Airtime'
-                    ? navigation.navigate('Airtime')
-                    : data.title === 'Voucher'
-                    ? navigation.navigate('Voucher')
-                    : data.title === 'Bills'
-                    ? navigation.navigate('Bills')
-                    : data.title === 'Product Codes'
-                    ? dial('*878*140#')
-                    : data.title === 'Settings'
-                    ? navigation.navigate('Settings')
-                    : '';
-                }}>
-                <View>{data.img}</View>
-                <View>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      paddingTop: 10,
-                      color: '#327529',
-                    }}>
-                    {data.title}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View> */}
+
         <FlatGrid
           itemDimension={80}
           data={Buttons}
@@ -242,7 +212,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#327529',
     padding: 10,
-    height: heightPercentageToDP(20),
+    height: 100,
   },
   ViewBtn: {
     flexDirection: 'row',
