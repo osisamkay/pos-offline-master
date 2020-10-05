@@ -20,12 +20,14 @@ import Loader from 'react-native-multi-loader';
 import {Buttons} from '../Components/HomeButton';
 import {Toast} from 'native-base';
 import {FlatGrid} from 'react-native-super-grid';
+import SplashScreen from 'react-native-splash-screen';
 
 const Home = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
+    SplashScreen.hide();
     // Update the document title using the browser API
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
@@ -111,7 +113,7 @@ const Home = ({navigation}) => {
           style={styles.gridView}
           // staticDimension={300}
           // fixed
-          spacing={6}
+          spacing={10}
           renderItem={({item}) => (
             <TouchableOpacity
               style={styles.clickable}
@@ -198,6 +200,7 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP('10%'),
     borderColor: 'green',
     marginVertical: 10,
+    alignSelf: 'center',
   },
   modalBtn: {
     backgroundColor: '#4AA43D',
