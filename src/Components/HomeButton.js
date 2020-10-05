@@ -14,4 +14,12 @@ export const Buttons = [
     title: 'Bills',
     img: <Image source={require('../assets/Group5.png')} />,
   },
+  {
+    title: 'Product Codes',
+    img: <Image source={require('../assets/Group5.png')} />,
+  },
+  {
+    title: 'Settings',
+    img: <Image source={require('../assets/Group5.png')} />,
+  },
 ];

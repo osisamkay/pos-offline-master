@@ -16,6 +16,7 @@ const DirectRecharge = () => {
   const [token, setToken] = useState('');
   const [amount, setAmount] = useState('');
   const [line, setLine] = useState('08161341234');
+  const [pin, setPin] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     // Update the document title using the browser API
@@ -79,6 +80,18 @@ const DirectRecharge = () => {
                 setAmount(value);
               }}
             />
+            <Input
+              placeholder="Enter Pin"
+              errorStyle={{color: 'red'}}
+              textContentType="password"
+              secureTextEntry={true}
+              label="Pin :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setPin(value);
+              }}
+            />
             <Button
               title="Fund Customer"
               titleStyle={styles.btnTitle}
@@ -92,7 +105,7 @@ const DirectRecharge = () => {
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*5*${token}*${amount}#`);
+                  dial(`*878*402*${token}*${amount}*${pin}#`);
                 }
               }}
             />
@@ -115,10 +128,10 @@ const styles = StyleSheet.create({
   centeredView: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    // marginTop: 22,
   },
   mainView: {
-    margin: 20,
+    // margin: 10,
 
     borderRadius: 10,
     alignItems: 'center',

@@ -18,6 +18,8 @@ import {Button} from 'react-native-elements';
 import {fundLinks} from '../Components/FundModal';
 import Loader from 'react-native-multi-loader';
 import {Buttons} from '../Components/HomeButton';
+import {Toast} from 'native-base';
+import {FlatGrid} from 'react-native-super-grid';
 
 const Home = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,11 @@ const Home = ({navigation}) => {
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
       console.log(event.ussdReply);
+      Toast.show({
+        text: event.ussdReply,
+        buttonText: 'Okay',
+        duration: 5000,
+      });
     });
     return () => {
       eventListener.remove();
@@ -64,7 +71,7 @@ const Home = ({navigation}) => {
             setModalVisible(true);
           }}
         />
-        <View style={styles.ViewBtn}>
+        {/* <View style={styles.ViewBtn}>
           {Buttons.map((data) => {
             return (
               <TouchableOpacity
@@ -77,6 +84,10 @@ const Home = ({navigation}) => {
                     ? navigation.navigate('Voucher')
                     : data.title === 'Bills'
                     ? navigation.navigate('Bills')
+                    : data.title === 'Product Codes'
+                    ? dial('*878*140#')
+                    : data.title === 'Settings'
+                    ? navigation.navigate('Settings')
                     : '';
                 }}>
                 <View>{data.img}</View>
@@ -93,7 +104,44 @@ const Home = ({navigation}) => {
               </TouchableOpacity>
             );
           })}
-        </View>
+        </View> */}
+        <FlatGrid
+          itemDimension={80}
+          data={Buttons}
+          style={styles.gridView}
+          // staticDimension={300}
+          // fixed
+          spacing={6}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              style={styles.clickable}
+              onPress={() => {
+                item.title === 'Airtime'
+                  ? navigation.navigate('Airtime')
+                  : item.title === 'Voucher'
+                  ? navigation.navigate('Voucher')
+                  : item.title === 'Bills'
+                  ? navigation.navigate('Bills')
+                  : item.title === 'Product Codes'
+                  ? dial('*878*140#')
+                  : item.title === 'Settings'
+                  ? navigation.navigate('Settings')
+                  : '';
+              }}>
+              <View>{item.img}</View>
+              <View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: 10,
+                    color: '#327529',
+                  }}>
+                  {item.title}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       </ScrollView>
       <Modal
         animationType="slide"
@@ -185,17 +233,19 @@ const styles = StyleSheet.create({
   },
   clickable: {
     borderWidth: 1,
-    width: widthPercentageToDP('25%'),
+    // width: widthPercentageToDP('29%'),
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#327529',
     padding: 10,
+    height: heightPercentageToDP(20),
   },
   ViewBtn: {
     flexDirection: 'row',
     width: widthPercentageToDP('93%'),
     justifyContent: 'space-between',
     marginTop: 50,
+    flexWrap: 'wrap',
   },
 });

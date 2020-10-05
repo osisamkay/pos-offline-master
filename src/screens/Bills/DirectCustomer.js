@@ -19,6 +19,7 @@ const Voucher = () => {
   const [line, setLine] = useState('08161341234');
   const [selectedValue, setSelectedValue] = useState('--select Cable--');
   const [modalVisible, setModalVisible] = useState(false);
+  const [pin, setPin] = useState('');
   const [devices, setDevices] = useState([]);
 
   useEffect(() => {
@@ -89,6 +90,18 @@ const Voucher = () => {
                 setCableNumber(value);
               }}
             />
+            <Input
+              placeholder="Enter Pin"
+              errorStyle={{color: 'red'}}
+              textContentType="password"
+              secureTextEntry={true}
+              label="Pin :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setPin(value);
+              }}
+            />
 
             <Button
               title="Fund Cable"
@@ -98,7 +111,8 @@ const Voucher = () => {
               onPress={() => {
                 if (
                   selectedValue === '--Select Cable--' ||
-                  cableNumber === ''
+                  cableNumber === '' ||
+                  pin === ''
                 ) {
                   Toast.show({
                     text: 'Please Enter All Parameters',
@@ -106,7 +120,7 @@ const Voucher = () => {
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*15*${selectedValue}*${cableNumber}#`);
+                  dial(`*878*404*${selectedValue}*${cableNumber}*${pin}#`);
                 }
               }}
             />

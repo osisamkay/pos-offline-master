@@ -16,15 +16,17 @@ const Voucher = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const [amount, setAmount] = useState('');
+  const [print, setPrint] = useState(false);
   const [line, setLine] = useState('08161341234');
   const [selectedValue, setSelectedValue] = useState('--select--');
   const [modalVisible, setModalVisible] = useState(false);
+  const [pin, setPin] = useState('');
   const [devices, setDevices] = useState([]);
 
   useEffect(() => {
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
-      console.log(event.ussdReply);
+      setPrint(true);
       Toast.show({
         text: event.ussdReply,
         buttonText: 'Okay',
@@ -33,6 +35,7 @@ const Voucher = () => {
     });
     return () => {
       eventListener.remove();
+      setPrint(false);
     };
   });
 
@@ -62,7 +65,7 @@ const Voucher = () => {
         <View style={styles.centeredView}>
           <View style={styles.mainView}>
             <Text style={styles.header}>Voucher</Text>
-            <View style={styles.pickerStyle}>
+            {/* <View style={styles.pickerStyle}>
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
@@ -73,7 +76,7 @@ const Voucher = () => {
                 onValueChange={onValueChange}>
                 <Picker.Item label="-- Select Network --" value="key0" />
               </Picker>
-            </View>
+            </View> */}
 
             <Input
               placeholder="Enter Amount"
@@ -87,24 +90,56 @@ const Voucher = () => {
                 setAmount(value);
               }}
             />
+            <Input
+              placeholder="Enter Pin"
+              errorStyle={{color: 'red'}}
+              textContentType="password"
+              secureTextEntry={true}
+              label="Pin :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setPin(value);
+              }}
+            />
 
             <Button
-              title="Fund Customer"
+              title="Process"
               titleStyle={styles.btnTitle}
               buttonStyle={styles.btnStyle}
               type="outline"
               onPress={() => {
-                if (token === '' || amount === '') {
+                setPrint(false);
+                if (pin === '' || amount === '') {
                   Toast.show({
                     text: 'Please Enter All Parameters',
                     buttonText: 'Okay',
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*5*${token}*${amount}#`);
+                  dial(`*878*18*${amount}*${pin}#`);
                 }
               }}
             />
+            {print && (
+              <Button
+                title="Print"
+                titleStyle={styles.btnTitle}
+                buttonStyle={styles.btnStyle}
+                type="outline"
+                onPress={() => {
+                  if (pin === '' || amount === '') {
+                    Toast.show({
+                      text: 'Please Enter All Parameters',
+                      buttonText: 'Okay',
+                      duration: 5000,
+                    });
+                  } else {
+                    dial(`*878*18*${amount}*${pin}#`);
+                  }
+                }}
+              />
+            )}
           </View>
           <Loader
             visible={loading}

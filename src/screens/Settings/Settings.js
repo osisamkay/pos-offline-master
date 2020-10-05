@@ -1,27 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Input} from 'react-native-elements';
-import {Button} from 'react-native-elements';
-import {PermissionsAndroid} from 'react-native';
-import Ussd, {ussdEventEmitter} from 'react-native-ussd';
-import Loader from 'react-native-multi-loader';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
+import {Button} from 'react-native-elements';
+import {PermissionsAndroid} from 'react-native';
+import Ussd, {ussdEventEmitter} from 'react-native-ussd';
+import Loader from 'react-native-multi-loader';
 import {Toast} from 'native-base';
 
-const DirectTopUp = () => {
+const Settings = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
-  const [pin, setPin] = useState('');
   const [line, setLine] = useState('08161341234');
   const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     // Update the document title using the browser API
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
-      console.log(event.ussdReply);
       Toast.show({
         text: event.ussdReply,
         buttonText: 'Okay',
@@ -52,40 +49,28 @@ const DirectTopUp = () => {
     }
   };
   return (
-    <View style={styles.centeredView}>
-      <View style={styles.mainView}>
-        <Input
-          placeholder="Enter Customer Token"
-          errorStyle={{color: 'red'}}
-          errorMessage=""
-          label="Customer Token :"
-          labelStyle={styles.label}
-          inputContainerStyle={styles.input}
-          onChangeText={(value) => {
-            setToken(value);
-          }}
-        />
-        <Input
-          placeholder="Enter Pin"
-          errorStyle={{color: 'red'}}
-          textContentType="password"
-          secureTextEntry={true}
-          label="Pin :"
-          labelStyle={styles.label}
-          inputContainerStyle={styles.input}
-          onChangeText={(value) => {
-            setPin(value);
-          }}
-        />
-        <Button
-          title="Fund Customer"
-          titleStyle={styles.btnTitle}
-          buttonStyle={styles.btnStyle}
-          type="outline"
-          onPress={() => {
-            dial(`*878*400*${token}*${pin}#`);
-          }}
-        />
+    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Button
+            title="Direct Request from Customer"
+            titleStyle={styles.btnTitle}
+            buttonStyle={styles.modalBtn}
+            type="outline"
+            onPress={() => {
+              navigation.navigate('DirectCable');
+            }}
+          />
+          <Button
+            title="Direct to Customer"
+            titleStyle={styles.btnTitle}
+            buttonStyle={styles.modalBtn}
+            type="outline"
+            onPress={() => {
+              navigation.navigate('DirectCustomer');
+            }}
+          />
+        </View>
       </View>
       <Loader
         visible={loading}
@@ -93,39 +78,40 @@ const DirectTopUp = () => {
         loaderType="default"
         textType="default"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default DirectTopUp;
+export default Settings;
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
-  mainView: {
+  modalView: {
     margin: 20,
-
+    backgroundColor: '#4aa43d14',
     borderRadius: 10,
+    padding: 35,
     alignItems: 'center',
     width: widthPercentageToDP('95%'),
   },
-  input: {
-    borderColor: 'green',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  btnStyle: {
+  modalBtn: {
     backgroundColor: '#4AA43D',
-    width: widthPercentageToDP('90%'),
+    width: widthPercentageToDP('80%'),
     height: heightPercentageToDP('10%'),
     borderColor: 'green',
     marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
   },
-
   btnTitle: {
     color: '#fff',
   },

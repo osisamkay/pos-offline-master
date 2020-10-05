@@ -19,6 +19,7 @@ const DirectElectricityCustomer = () => {
   const [meter, setMeter] = useState('');
   const [amount, setAmount] = useState('');
   const [selectedValue, setSelectedValue] = useState('--select Cable--');
+  const [pin, setPin] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [devices, setDevices] = useState([]);
 
@@ -77,7 +78,6 @@ const DirectElectricityCustomer = () => {
                 <Picker.Item label="IKDC" value="200" />
               </Picker>
             </View>
-
             <Input
               placeholder="Enter Meter Number"
               errorStyle={{color: 'red'}}
@@ -102,7 +102,18 @@ const DirectElectricityCustomer = () => {
                 setAmount(value);
               }}
             />
-
+            <Input
+              placeholder="Enter Pin"
+              errorStyle={{color: 'red'}}
+              textContentType="password"
+              secureTextEntry={true}
+              label="Pin :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setPin(value);
+              }}
+            />
             <Button
               title="Fund "
               titleStyle={styles.btnTitle}
@@ -120,7 +131,7 @@ const DirectElectricityCustomer = () => {
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*19*${selectedValue}*${meter}*${amount}#`);
+                  dial(`*878*405*${selectedValue}*${meter}*${amount}*${pin}#`);
                 }
               }}
             />

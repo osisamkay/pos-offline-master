@@ -15,6 +15,7 @@ const DirectCable = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const [amount, setAmount] = useState('');
+  const [pin, setPin] = useState('');
   const [line, setLine] = useState('08161341234');
   const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
@@ -67,20 +68,32 @@ const DirectCable = () => {
                 setToken(value);
               }}
             />
+            <Input
+              placeholder="Enter Pin"
+              errorStyle={{color: 'red'}}
+              textContentType="password"
+              secureTextEntry={true}
+              label="Pin :"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+              onChangeText={(value) => {
+                setPin(value);
+              }}
+            />
             <Button
               title="Approve"
               titleStyle={styles.btnTitle}
               buttonStyle={styles.btnStyle}
               type="outline"
               onPress={() => {
-                if (token === '') {
+                if (token === '' || pin === '') {
                   Toast.show({
                     text: 'Please Enter All Parameters',
                     buttonText: 'Okay',
                     duration: 5000,
                   });
                 } else {
-                  dial(`*878*7*${token}*#`);
+                  dial(`*878*403*${token}*${pin}#`);
                 }
               }}
             />
