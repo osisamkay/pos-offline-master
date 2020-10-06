@@ -22,12 +22,13 @@ import {Toast} from 'native-base';
 import {FlatGrid} from 'react-native-super-grid';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../Action/Action';
 
 const Home = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const {isReg, userToken} = useSelector((state) => state);
-  console.log(userToken.token);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     SplashScreen.hide();
@@ -58,11 +59,17 @@ const Home = ({navigation}) => {
 
     if (granted) {
       console.log('CAN Make Calls');
-      Ussd.dial(code); //add your dilaing code instead of *#456#
+      Ussd.dial(code);
     } else {
       console.log('CALL MAKING Permission Denied');
     }
   };
+
+  const out = () => {
+    dispatch(logout());
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -98,6 +105,8 @@ const Home = ({navigation}) => {
                   ? dial('*878*140#')
                   : item.title === 'Settings'
                   ? navigation.navigate('Settings')
+                  : item.title === 'Log Out'
+                  ? out()
                   : '';
               }}>
               <View>{item.img}</View>

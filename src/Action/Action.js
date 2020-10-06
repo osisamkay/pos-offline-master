@@ -1,8 +1,12 @@
 import {actionType} from './ActionType';
 
-const {REG_USER, LOGIN_SUCCESS, LOGIN_USER, LOGOUT_USER} = actionType;
+const {REG_USER, LOG_USER_OUT} = actionType;
 
 export const regUser = (payload) => ({
   payload,
   type: REG_USER,
+});
+export const logout = (payload) => ({
+  payload,
+  type: LOG_USER_OUT,
 });

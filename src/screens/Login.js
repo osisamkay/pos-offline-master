@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {Buttons} from '../Components/HomeButton';
 import {Button} from 'react-native-elements';
 import {
@@ -10,34 +17,35 @@ import SplashScreen from 'react-native-splash-screen';
 import {PermissionsAndroid} from 'react-native';
 import Ussd, {ussdEventEmitter} from 'react-native-ussd';
 import {Toast} from 'native-base';
+import {Input} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {regUser} from '../Action/Action';
 import Loader from 'react-native-multi-loader';
 
-const Reg = ({navigation}) => {
+const Login = ({navigation}) => {
   const [loading, setLoading] = useState(false);
-  const {isReg} = useSelector((state) => state);
-
+  const {isReg, userToken} = useSelector((state) => state);
+  const [pin, setPin] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isReg === true) {
-      navigation.navigate('Login');
+    if (userToken === {}) {
+      navigation.navigate('Reg');
     }
-  }, [isReg]);
+  }, [userToken]);
 
   useEffect(() => {
     SplashScreen.hide();
     // Update the document title using the browser API
     const eventListener = ussdEventEmitter.addListener('ussdEvent', (event) => {
       setLoading(false);
-      console.log(event.ussdReply);
-      dispatch(regUser({token: '00002'}));
+      setPin('');
       Toast.show({
         text: event.ussdReply,
         buttonText: 'Okay',
         duration: 5000,
       });
+
+      navigation.navigate('Home');
     });
     return () => {
       eventListener.remove();
@@ -64,35 +72,58 @@ const Reg = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.image}>
-        <Image
-          source={require('../assets/splash_icon.png')}
-          style={styles.img}
-          resizeMode="contain"
-        />
-      </View>
+      <ScrollView>
+        <View style={styles.image}>
+          <Image
+            source={require('../assets/splash_icon.png')}
+            style={styles.img}
+            resizeMode="contain"
+          />
+          <Input
+            placeholder="Enter Pin"
+            errorStyle={{color: 'red'}}
+            textContentType="password"
+            secureTextEntry={true}
+            label="Pin :"
+            labelStyle={styles.label}
+            value={pin}
+            keyboardType="number-pad"
+            inputContainerStyle={styles.input}
+            onChangeText={(value) => {
+              setPin(value);
+            }}
+          />
+        </View>
 
-      <Button
-        title="Continue"
-        titleStyle={styles.btnTitle}
-        buttonStyle={styles.btnStyle}
-        type="outline"
-        onPress={() => {
-          //   navigation.navigate('Home');
-          dial('*878*300#');
-        }}
-      />
-      <Loader
-        visible={loading}
-        textLoader="Please wait"
-        loaderType="default"
-        textType="default"
-      />
+        <Button
+          title="Continue"
+          titleStyle={styles.btnTitle}
+          buttonStyle={styles.btnStyle}
+          type="outline"
+          onPress={() => {
+            if (pin === '') {
+              Toast.show({
+                text: 'Please Enter Pin',
+                buttonText: 'Okay',
+                duration: 3000,
+              });
+            } else {
+              dial(`*878*${userToken.token}${pin}#`);
+            }
+          }}
+        />
+        <Loader
+          visible={loading}
+          textLoader="Please wait"
+          loaderType="default"
+          textType="default"
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Reg;
+export default Login;
 
 const styles = StyleSheet.create({
   btnStyle: {
@@ -125,5 +156,10 @@ const styles = StyleSheet.create({
   img: {
     height: heightPercentageToDP(25),
     width: widthPercentageToDP(80),
+  },
+  input: {
+    borderColor: 'green',
+    borderWidth: 1,
+    borderRadius: 5,
   },
 });

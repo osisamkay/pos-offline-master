@@ -16,6 +16,7 @@ import AirtimeRoute from './Routes/AirtimeRoute';
 import VoucherRoutes from './Routes/VoucherRoute';
 import BillsRoute from './Routes/BillsRoute';
 import ElectricityRoute from './Routes/ElectricityRoute';
+import SettingRoute from './Routes/SettingRoute';
 import Reg from './src/screens/Reg';
 import {rootReducer} from './src/Redux/rootReducer';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
@@ -24,6 +25,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import Login from './src/screens/Login';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +39,13 @@ const App = () => {
             headerShown: false,
           }}
           component={Reg}
+        />
+        <Stack.Screen
+          name="Login"
+          options={{
+            headerShown: false,
+          }}
+          component={Login}
         />
         <Stack.Screen
           name="Home"
@@ -129,6 +138,13 @@ const App = () => {
             headerShown: false,
           }}
           component={ElectricityRoute}
+        />
+        <Stack.Screen
+          name="Settings"
+          options={{
+            headerShown: false,
+          }}
+          component={SettingRoute}
         />
       </Stack.Navigator>
     </NavigationContainer>

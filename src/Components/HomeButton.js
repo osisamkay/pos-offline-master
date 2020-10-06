@@ -22,4 +22,8 @@ export const Buttons = [
     title: 'Settings',
     img: <Image source={require('../assets/Group5.png')} />,
   },
+  {
+    title: 'Log Out',
+    img: <Image source={require('../assets/Group5.png')} />,
+  },
 ];

@@ -1,7 +1,7 @@
 import {actionType} from '../Action/ActionType';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const {REG_USER} = actionType;
+const {REG_USER, LOG_USER_OUT} = actionType;
 
 const initialState = {
   isLogged: false,
@@ -25,6 +25,12 @@ export const rootReducer = (state = initialState, {type, payload}) => {
         userToken: payload,
         // loading: true,
         isReg: true,
+      };
+    case LOG_USER_OUT:
+      return {
+        ...state,
+
+        isReg: false,
       };
 
     default:

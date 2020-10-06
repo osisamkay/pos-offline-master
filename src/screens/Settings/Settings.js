@@ -32,7 +32,6 @@ const Settings = ({navigation}) => {
 
   const dial = async (code) => {
     setLoading(true);
-    console.log(code);
     let granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CALL_PHONE,
       {
@@ -53,21 +52,30 @@ const Settings = ({navigation}) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Button
-            title="Direct Request from Customer"
+            title="Balance Enquiry"
             titleStyle={styles.btnTitle}
             buttonStyle={styles.modalBtn}
             type="outline"
             onPress={() => {
-              navigation.navigate('DirectCable');
+              dial('*878*8#');
             }}
           />
           <Button
-            title="Direct to Customer"
+            title="Last 5 TopUp history Enquiry"
             titleStyle={styles.btnTitle}
             buttonStyle={styles.modalBtn}
             type="outline"
             onPress={() => {
-              navigation.navigate('DirectCustomer');
+              dial('*878*11#');
+            }}
+          />
+          <Button
+            title="Log offline and Online"
+            titleStyle={styles.btnTitle}
+            buttonStyle={styles.modalBtn}
+            type="outline"
+            onPress={() => {
+              dial('*878*12#');
             }}
           />
         </View>
